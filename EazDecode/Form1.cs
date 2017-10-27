@@ -12,10 +12,9 @@ namespace EazDecode
         public Form1()
 		{
 			InitializeComponent();
-			if (File.Exists("password.txt"))
-			{
-				txtbPassword.Text = File.ReadAllText("password.txt");
-			}
+
+		    if (File.Exists("password.txt"))
+		        txtbPassword.Text = File.ReadAllText("password.txt");
 		}
 
 		private void txtbIn_TextChanged(object sender, EventArgs e)
@@ -24,12 +23,9 @@ namespace EazDecode
 		        btnDecode_Click(sender, e);
 		}
 
-		private void cbAuto_CheckedChanged(object sender, EventArgs e)
-		{
-			txtbIn_TextChanged(sender, e);
-		}
+		private void cbAuto_CheckedChanged(object sender, EventArgs e) => txtbIn_TextChanged(sender, e);
 
-		private void txtbPassword_TextChanged(object sender, EventArgs e)
+	    private void txtbPassword_TextChanged(object sender, EventArgs e)
 		{
 			_crypto = new CryptoHelper(txtbPassword.Text);
 			File.WriteAllText("password.txt", txtbPassword.Text);
@@ -48,7 +44,7 @@ namespace EazDecode
 				if (ex is CryptographicException)
 				{
 					TextBox textBox = txtbOut;
-					textBox.Text += "\n\nPlease check if the password is correct.";
+					textBox.Text += "\n\n" + "Please check if the password is correct.";
 				}
 			}
 		}

@@ -7,7 +7,9 @@ namespace EazDecode
 {
 	internal class CryptoHelper
 	{
-		public CryptoHelper(string password)
+	    private readonly SymmetricAlgorithm _symmetricAlgorithm;
+
+        public CryptoHelper(string password)
 		{
 			_symmetricAlgorithm = new RijndaelManaged
 			{
@@ -48,26 +50,31 @@ namespace EazDecode
 
 		private string DecryptWithXor(byte[] toDecrypt)
 		{
-			MemoryStream memoryStream = new MemoryStream();
+			var memoryStream = new MemoryStream();
+
+            //decrypt
 			using (ICryptoTransform cryptoTransform = _symmetricAlgorithm.CreateDecryptor())
 			{
-				CryptoStream cryptoStream = new CryptoStream(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-				cryptoStream.Write(toDecrypt, 0, toDecrypt.Length);
-				cryptoStream.FlushFinalBlock();
-				cryptoStream.Close();
+			    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, cryptoTransform, CryptoStreamMode.Write)) {
+			        cryptoStream.Write(toDecrypt, 0, toDecrypt.Length);
+                    //TODO: check if FlushFinalBlock is needed (probably not)
+                }
 			}
 			toDecrypt = memoryStream.ToArray();
-			byte b = toDecrypt[toDecrypt.Length - 1];
+
+            //get xor key
+			byte xorKey = toDecrypt[toDecrypt.Length - 1];
+
+            //trim last byte
 			Array.Resize<byte>(ref toDecrypt, toDecrypt.Length - 1);
+
+            //xor all bytes
 			for (int i = 0; i < toDecrypt.Length; i++)
 			{
-				byte[] array = toDecrypt;
-				int num = i;
-				array[num] ^= b;
+			    toDecrypt[i] ^= xorKey;
 			}
+
 			return Encoding.UTF8.GetString(toDecrypt);
 		}
-
-		private readonly SymmetricAlgorithm _symmetricAlgorithm;
 	}
 }
