@@ -5,90 +5,31 @@ using System.Text;
 
 namespace EazDecode
 {
-	// Token: 0x02000002 RID: 2
 	internal class CryptoHelper
 	{
-		// Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
 		public CryptoHelper(string password)
 		{
-			this._symmetricAlgorithm = new RijndaelManaged
+			_symmetricAlgorithm = new RijndaelManaged
 			{
 				KeySize = 256,
 				BlockSize = 128,
 				IV = new Rfc2898DeriveBytes(password, new byte[]
 				{
-					28,
-					136,
-					27,
-					216,
-					83,
-					147,
-					140,
-					207,
-					60,
-					153,
-					41,
-					107,
-					117,
-					164,
-					37,
-					157,
-					94,
-					233,
-					51,
-					48,
-					146,
-					108,
-					127,
-					191,
-					30,
-					226,
-					250,
-					88,
-					109,
-					7,
-					132,
-					15
+					0x1C, 0x88, 0x1B, 0xD8, 0x53, 0x93, 0x8C, 0xCF,
+					0x3C, 0x99, 0x29, 0x6B, 0x75, 0xA4, 0x25, 0x9D,
+					0x5E, 0xE9, 0x33, 0x30, 0x92, 0x6C, 0x7F, 0xBF,
+					0x1E, 0xE2, 0xFA, 0x58, 0x6D, 0x07, 0x84, 0x0F
 				}).GetBytes(16),
 				Key = new Rfc2898DeriveBytes(password, new byte[]
 				{
-					167,
-					126,
-					112,
-					16,
-					4,
-					244,
-					15,
-					120,
-					135,
-					116,
-					123,
-					212,
-					157,
-					48,
-					5,
-					194,
-					12,
-					179,
-					153,
-					201,
-					204,
-					249,
-					248,
-					212,
-					86,
-					20,
-					215,
-					55,
-					105,
-					157,
-					111,
-					11
+					0xA7, 0x7E, 0x70, 0x10, 0x04, 0xF4, 0x0F, 0x78, 
+					0x87, 0x74, 0x7B, 0xD4, 0x9D, 0x30, 0x05, 0xC2, 
+					0x0C, 0xB3, 0x99, 0xC9, 0xCC, 0xF9, 0xF8, 0xD4, 
+					0x56, 0x14, 0xD7, 0x37, 0x69, 0x9D, 0x6F, 0x0B
 				}).GetBytes(32)
 			};
 		}
 
-		// Token: 0x06000002 RID: 2 RVA: 0x000020D0 File Offset: 0x000002D0
 		internal string Decrypt(string input)
 		{
 			if (!input.StartsWith("#="))
@@ -100,16 +41,15 @@ namespace EazDecode
 			{
 				text = text.Substring(1);
 				text = text.Replace('_', '+').Replace('$', '/');
-				return this.DecryptWithXor(Convert.FromBase64String(text));
+				return DecryptWithXor(Convert.FromBase64String(text));
 			}
 			throw new NotImplementedException("I don't support this encryption type (yet), poke me about it");
 		}
 
-		// Token: 0x06000003 RID: 3 RVA: 0x00002144 File Offset: 0x00000344
 		private string DecryptWithXor(byte[] toDecrypt)
 		{
 			MemoryStream memoryStream = new MemoryStream();
-			using (ICryptoTransform cryptoTransform = this._symmetricAlgorithm.CreateDecryptor())
+			using (ICryptoTransform cryptoTransform = _symmetricAlgorithm.CreateDecryptor())
 			{
 				CryptoStream cryptoStream = new CryptoStream(memoryStream, cryptoTransform, CryptoStreamMode.Write);
 				cryptoStream.Write(toDecrypt, 0, toDecrypt.Length);
@@ -128,7 +68,6 @@ namespace EazDecode
 			return Encoding.UTF8.GetString(toDecrypt);
 		}
 
-		// Token: 0x04000001 RID: 1
 		private readonly SymmetricAlgorithm _symmetricAlgorithm;
 	}
 }
