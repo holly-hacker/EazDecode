@@ -300,7 +300,7 @@ namespace EazDecode
             {
                 //sort input by blocksize
                 var l = algos.ToList();
-                l.Sort((x, y) => x.BlockSize.CompareTo(y.BlockSize));
+                l.Sort((x, y) => y.BlockSize.CompareTo(x.BlockSize));
                 _algos = l.ToArray();
 
                 //set all algos to ECB and get total key size
@@ -330,8 +330,8 @@ namespace EazDecode
                 set => IVValue = (byte[]) value.Clone();
             }
 
-            public override ICryptoTransform CreateEncryptor(byte[] key, byte[] iv) => GetCryptoTransform(key, iv, false);
-            public override ICryptoTransform CreateDecryptor(byte[] key, byte[] iv) => GetCryptoTransform(key, iv, true);
+            public override ICryptoTransform CreateEncryptor(byte[] key, byte[] iv) => GetCryptoTransform(key, iv, true);
+            public override ICryptoTransform CreateDecryptor(byte[] key, byte[] iv) => GetCryptoTransform(key, iv, false);
             private ICryptoTransform GetCryptoTransform(byte[] key, byte[] iv, bool encrypt) => new CryptTrans1(_algos, key, iv, encrypt);
 
             public override void GenerateKey() => throw new NotSupportedException();
@@ -551,7 +551,7 @@ namespace EazDecode
                 BlowfishKey blowfishKey = null;
                 lock (_lock) {
                     //if keys match, use previous one
-                    if (key.Length == _key.Length && !key.Where((t, i) => t != _key[i]).Any())
+                    if (_key != null && key.Length == _key.Length && !key.Where((t, i) => t != _key[i]).Any())
                         blowfishKey = _blowfishKey;
                 }
                 //and also return it
