@@ -1,1 +1,2 @@
-osudec2
+# EazDecode
+A program for decoding Eazfuscator stacktraces.
