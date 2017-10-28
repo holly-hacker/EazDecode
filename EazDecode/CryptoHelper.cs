@@ -8,10 +8,13 @@ namespace EazDecode
 	internal class CryptoHelper
 	{
 	    private readonly SymmetricAlgorithm _symmetricAlgorithm;
+	    public string Password { get; }
 
-        public CryptoHelper(string password)
-		{
-			_symmetricAlgorithm = new RijndaelManaged
+	    public CryptoHelper(string password)
+        {
+            Password = password;
+
+            _symmetricAlgorithm = new RijndaelManaged
 			{
 				KeySize = 256,
 				BlockSize = 128,

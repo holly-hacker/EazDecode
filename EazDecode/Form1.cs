@@ -40,12 +40,24 @@ namespace EazDecode
 			}
 			catch (Exception ex)
 			{
-				txtbOut.Text = $"An error occured while decoding: {ex.Message}";
+				txtbOut.Text = $"An error occured while decoding ourself: {ex.Message}\r\n";
 				if (ex is CryptographicException)
 				{
-					TextBox textBox = txtbOut;
-					textBox.Text += "\n\n" + "Please check if the password is correct.";
+				    txtbOut.Text += "Please check if the password is correct.\r\n";
 				}
+
+			    txtbOut.Text += "\r\n" + new string('-', 20) + "\r\n\r\n";
+
+			    try
+                {
+			        string str = Eazfuscator.NET.SDK.StackTraceDecoding.StackTraceDecoder.Run(txtbIn.Text, _crypto.Password) + "\n";
+                    txtbOut.Text += str;
+                }
+                catch (Exception ex2)
+                {
+			        txtbOut.Text += "Official SDK could also not decrypt this: " + ex2.Message + "\n";
+			        throw;
+			    }
 			}
 		}
 
