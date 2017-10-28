@@ -45,6 +45,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crypto3.cs" />
     <Compile Include="CryptoHelper.cs" />
     <Compile Include="Decoder.cs" />
     <Compile Include="Form1.cs">
