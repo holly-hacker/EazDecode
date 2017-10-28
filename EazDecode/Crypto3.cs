@@ -19,8 +19,13 @@ namespace EazDecode
 
         private RandomNumberGenerator _rng = new RNGCryptoServiceProvider();
 
+        private SymbolDecompressor _sc;
+
         public Crypto3(string password)
         {
+            //create SymbolDecompressor
+            _sc = new SymbolDecompressor();
+
             //get a random provider
             var deriveBytes = new Rfc2898DeriveBytes(password, salt, 3000);
 
@@ -66,7 +71,7 @@ namespace EazDecode
             enc = RemoveTrailingNullBytes(enc);
             enc = ApplyXor(enc);
             //TODO: SymbolDecompressor!!
-            return "";
+            return _sc.Decompress(enc);
         }
 
         /// <summary>
