@@ -57,7 +57,7 @@ namespace EazDecode
                         stringBuilder.Append(value);
                     }
                 }
-                return stringBuilder.ToString().TrimEnd('\0');  //TrimEnd is a dirty hack. I should fix this.
+                return stringBuilder.ToString();
             }
         }
 

@@ -20,8 +20,8 @@ namespace EazDecode
             var sb = new StringBuilder();
             for (;;) {
                 byte b = br.ReadByte();
-                sb.Append((char)b);
                 if (b == 0) break;
+                sb.Append((char) b);
             }
             return sb.ToString();
         }
