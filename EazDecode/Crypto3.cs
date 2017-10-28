@@ -905,8 +905,8 @@ namespace EazDecode
 
             private ICryptoTransform GetTransform(byte[] key, byte[] iv, bool encrypt) => new CryptTrans3(key, encrypt);
 
-            public override void GenerateIV() => throw new NotImplementedException();
-            public override void GenerateKey() => throw new NotImplementedException();
+            public override void GenerateIV() => IV = new byte[BlockSize/8];
+            public override void GenerateKey() => Key = new byte[0];
 
             public byte[] Encrypt(byte[] bytes) => DoCrypto(bytes, true);
             public byte[] Decrypt(byte[] bytes) => DoCrypto(bytes, false);
