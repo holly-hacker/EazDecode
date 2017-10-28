@@ -5,6 +5,10 @@ using System.Text;
 
 namespace EazDecode
 {
+    /// <summary>
+    /// Cryptographic algorithm used by Eazfuscator before 5.8. Consists of a
+    /// round of AES and an xor.
+    /// </summary>
     internal class Crypto2
     {
         private readonly SymmetricAlgorithm _symmetricAlgorithm;
@@ -34,28 +38,15 @@ namespace EazDecode
 
         internal string Decrypt(byte[] toDecrypt)
         {
-            var memoryStream = new MemoryStream();
+            //decrypt with AES
+            using (var ms = new MemoryStream()) {
+                using (CryptoStream cs = new CryptoStream(ms, _symmetricAlgorithm.CreateDecryptor(), CryptoStreamMode.Write))
+                    cs.Write(toDecrypt, 0, toDecrypt.Length);
 
-            //decrypt
-            using (ICryptoTransform ct = _symmetricAlgorithm.CreateDecryptor())
-            using (CryptoStream cs = new CryptoStream(memoryStream, ct, CryptoStreamMode.Write))
-                cs.Write(toDecrypt, 0, toDecrypt.Length);
-
-            toDecrypt = memoryStream.ToArray();
-
-            //TODO: most likely ApplyXor from Crypto3!
-
-            //get xor key
-            byte xorKey = toDecrypt[toDecrypt.Length - 1];
-
-            //trim last byte
-            Array.Resize(ref toDecrypt, toDecrypt.Length - 1);
-
-            //xor all bytes
-            for (int i = 0; i < toDecrypt.Length; i++)
-                toDecrypt[i] ^= xorKey;
-
-            return Encoding.UTF8.GetString(toDecrypt);
+                //decrypt xor
+                toDecrypt = CryptoHelper.XorArray(ms.ToArray());
+                return Encoding.UTF8.GetString(toDecrypt);
+            }
         }
     }
 }

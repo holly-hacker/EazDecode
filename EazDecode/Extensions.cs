@@ -26,7 +26,7 @@ namespace EazDecode
             return sb.ToString();
         }
 
-        public static int ReadByteCrypted(this BinaryReader br, int unk3)
+        public static int ReadByteCrypted(this BinaryReader br, byte unk3)
         {
             byte b = br.ReadByte();
             if (b <= unk3) return b;

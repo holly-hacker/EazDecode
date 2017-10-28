@@ -46,6 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Crypto3.cs" />
+    <Compile Include="Crypto3Algorithms\HashAlgoEncryption.cs" />
+    <Compile Include="Crypto3Algorithms\HashAlgoHomebrew.cs" />
+    <Compile Include="Crypto3Algorithms\HashAlgoPadder.cs" />
+    <Compile Include="Crypto3Algorithms\KeyedHashAlgo.cs" />
+    <Compile Include="Crypto3Algorithms\SymAlgoBlowfish.cs" />
+    <Compile Include="Crypto3Algorithms\SymAlgoHomebrew.cs" />
+    <Compile Include="Crypto3Algorithms\SymAlgoLengthOptimized.cs" />
+    <Compile Include="Crypto3Algorithms\SymAlgoPadder.cs" />
     <Compile Include="CryptoHelper.cs" />
     <Compile Include="Decoder.cs" />
     <Compile Include="Extensions.cs" />

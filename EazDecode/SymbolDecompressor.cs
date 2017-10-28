@@ -8,7 +8,7 @@ using EazDecode.Properties;
 namespace EazDecode
 {
     /// <summary>
-    /// Used by <seealso cref="Crypto3"/> TODO proper
+    /// Used by <seealso cref="Crypto3"/>
     /// </summary>
     internal class SymbolDecompressor
     {
@@ -18,9 +18,9 @@ namespace EazDecode
         private List<KeyValuePair<int, string>> _wordsList;
 
         private readonly byte[] _toReal = new byte[256];
-        private readonly byte[] _fromReal = new byte[256];
+        private readonly byte[] _fromReal = new byte[256];  //unused
         private readonly int _commonWordsStart;
-        private readonly byte _unk3;
+        private readonly byte _cryptoKey;
 
         public SymbolDecompressor()
         {
@@ -36,7 +36,7 @@ namespace EazDecode
                 index++;
             }
             _commonWordsStart = index - 1;
-            _unk3 = checked((byte) (256L - num));
+            _cryptoKey = checked((byte) (256L - num));
         }
 
         public string Decompress(byte[] buffer)
@@ -46,14 +46,17 @@ namespace EazDecode
                 var stringBuilder = new StringBuilder();
 
                 while (memoryStream.Position < memoryStream.Length) {
-                    int num = binaryReader.ReadByteCrypted(_unk3);
-                    if (num > _commonWordsStart) {
-                        num -= _commonWordsStart;
-                        string wordByNumber = _wordsList[num - 1].Value;
-                        stringBuilder.Append(wordByNumber);
+                    //read encrypted index
+                    int index = binaryReader.ReadByteCrypted(_cryptoKey);
+
+                    //if the index is for a common word
+                    if (index > _commonWordsStart) {
+                        index -= _commonWordsStart;
+                        stringBuilder.Append(_wordsList[index - 1].Value);
                     }
+                    //else, it is a character
                     else {
-                        char value = (char) _toReal[num];
+                        char value = (char) _toReal[index];
                         stringBuilder.Append(value);
                     }
                 }
