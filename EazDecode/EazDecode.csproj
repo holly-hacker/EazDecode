@@ -83,6 +83,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\res.bin" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libs\Eazfuscator.NET.SDK.dll" />
