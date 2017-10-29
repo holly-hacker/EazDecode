@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace EazDecode.Crypto3Algorithms
+namespace EazDecodeLib.Crypto3Algorithms
 {
     /// <inheritdoc />
     /// <summary>

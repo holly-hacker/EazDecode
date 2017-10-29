@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace EazDecode
+namespace EazDecodeLib
 {
     /// <summary>
     /// Cryptographic algorithm used by Eazfuscator before 5.8. Consists of a

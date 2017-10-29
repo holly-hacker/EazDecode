@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EazDecode", "EazDecode\EazDecode.csproj", "{11F2E02A-DA1E-4C2D-A398-4D1ED8AC2CE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EazDecodeLib", "EazDecodeLib\EazDecodeLib.csproj", "{1570C9EA-1AAB-4D65-B0AC-511984CFC3F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{11F2E02A-DA1E-4C2D-A398-4D1ED8AC2CE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11F2E02A-DA1E-4C2D-A398-4D1ED8AC2CE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11F2E02A-DA1E-4C2D-A398-4D1ED8AC2CE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1570C9EA-1AAB-4D65-B0AC-511984CFC3F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1570C9EA-1AAB-4D65-B0AC-511984CFC3F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1570C9EA-1AAB-4D65-B0AC-511984CFC3F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1570C9EA-1AAB-4D65-B0AC-511984CFC3F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC5E658A-6C9F-4855-83E0-064880174698}
 	EndGlobalSection
 EndGlobal

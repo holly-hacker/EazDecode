@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EazDecodeLib;
+using System;
 using System.Text.RegularExpressions;
 
 namespace EazDecode

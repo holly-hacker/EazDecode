@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace EazDecode
+namespace EazDecodeLib
 {
-	internal class CryptoHelper
+	public class CryptoHelper
 	{
 	    public string Password { get; }
 
@@ -24,7 +24,7 @@ namespace EazDecode
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-		internal string Decrypt(string input)
+		public string Decrypt(string input)
 		{
 			if (!input.StartsWith("#="))
 			{

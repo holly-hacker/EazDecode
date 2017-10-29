@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using EazDecode.Properties;
+using EazDecodeLib.Properties;
 
-namespace EazDecode
+namespace EazDecodeLib
 {
     /// <summary>
     /// Used by <seealso cref="Crypto3"/>

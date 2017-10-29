@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>EazDecode</RootNamespace>
     <AssemblyName>EazDecode</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>EazDecode.Program</StartupObject>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,58 +46,42 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Crypto3.cs" />
-    <Compile Include="Crypto3Algorithms\HashAlgoEncryption.cs" />
-    <Compile Include="Crypto3Algorithms\HashAlgoHomebrew.cs" />
-    <Compile Include="Crypto3Algorithms\HashAlgoPadder.cs" />
-    <Compile Include="Crypto3Algorithms\KeyedHashAlgo.cs" />
-    <Compile Include="Crypto3Algorithms\SymAlgoBlowfish.cs" />
-    <Compile Include="Crypto3Algorithms\SymAlgoHomebrew.cs" />
-    <Compile Include="Crypto3Algorithms\SymAlgoLengthOptimized.cs" />
-    <Compile Include="Crypto3Algorithms\SymAlgoPadder.cs" />
-    <Compile Include="CryptoHelper.cs" />
     <Compile Include="Decoder.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Crypto2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <DependentUpon>Resources.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <DependentUpon>Settings.settings</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="SymbolDecompressor.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\res.bin" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libs\Eazfuscator.NET.SDK.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EazDecodeLib\EazDecodeLib.csproj">
+      <Project>{1570c9ea-1aab-4d65-b0ac-511984cfc3f4}</Project>
+      <Name>EazDecodeLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

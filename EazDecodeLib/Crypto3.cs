@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
-using EazDecode.Crypto3Algorithms;
+using EazDecodeLib.Crypto3Algorithms;
 
-namespace EazDecode
+namespace EazDecodeLib
 {
     /// <summary>
     /// Encryption used in Eazfuscator 5.8+. Designed to produce compact 

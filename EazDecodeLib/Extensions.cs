@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace EazDecode
+namespace EazDecodeLib
 {
     internal static class Extensions
     {

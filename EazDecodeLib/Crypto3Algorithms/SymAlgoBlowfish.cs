@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EazDecode.Crypto3Algorithms
+namespace EazDecodeLib.Crypto3Algorithms
 {
     /// <inheritdoc />
     /// <summary>
