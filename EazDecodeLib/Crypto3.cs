@@ -49,7 +49,7 @@ namespace EazDecodeLib
             _padder = new SymAlgoPadder(new RijndaelManaged()) {Key = deriveBytes.GetBytes(32)};
 
             //create kha
-            _kha = new KeyedHashAlgo(new HashAlgoPadder(new HashAlgoEncryption(new HashAlgoHomebrew(), new SymAlgoSkipJack32(new byte[] {
+            _kha = new KeyedHashAlgo(new HashAlgoPadder(new HashAlgoEncryption(new HashAlgoFNV32(), new SymAlgoSkipJack32(new byte[] {
                 0xA3, 0x73, 0xF3, 0x68,
                 0xA0, 0x4A, 0x89, 0xE9,
                 0x92, 0xEC
@@ -57,7 +57,7 @@ namespace EazDecodeLib
 
             //create another hasher
             //this is not used?
-            _homebrewHasher = new HashAlgoEncryption(new HashAlgoHomebrew(), new SymAlgoSkipJack32(new byte[]
+            _homebrewHasher = new HashAlgoEncryption(new HashAlgoFNV32(), new SymAlgoSkipJack32(new byte[]
             {
                 0xEA, 0x5F, 0x88, 0xF2,
                 0xA2, 0x9C, 0x0F, 0xA9,

@@ -4,22 +4,22 @@ namespace EazDecodeLib.Crypto3Algorithms
 {
     /// <inheritdoc />
     /// <summary>
-    /// A homebrew hashing algorithm that consists of xoring and multiplying.
+    /// An implementation of the Fowler–Noll–Vo 1a hashing algorithm.
     /// </summary>
-    internal sealed class HashAlgoHomebrew : HashAlgorithm
+    internal sealed class HashAlgoFNV32 : HashAlgorithm
     {
-        private const uint IV = 0x811C9DC5;
-        private const uint MultKey = 0x01000193;
+        private const uint Basis = 0x811C9DC5;
+        private const uint Prime = 0x01000193;
         private uint _hash;
 
-        public HashAlgoHomebrew()
+        public HashAlgoFNV32()
         {
             HashSizeValue = 32;
             InitSeed();
         }
 
         public override void Initialize() => InitSeed();
-        private void InitSeed() => _hash = IV;
+        private void InitSeed() => _hash = Basis;
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
@@ -36,14 +36,16 @@ namespace EazDecodeLib.Crypto3Algorithms
             };
         }
 
-        public static int DoHash(byte[] array) => (int)DoHash(IV, array, 0, array.Length);
+        public static int DoHash(byte[] array) => (int)DoHash(Basis, array, 0, array.Length);
 
-        private static uint DoHash(uint seed, byte[] array, int ibStart, int cbSize)
+        private static uint DoHash(uint hash, byte[] array, int ibStart, int cbSize)
         {
-            for (int i = ibStart; i < ibStart + cbSize; i++)
-                seed = (seed ^ array[i]) * MultKey;
+            for (int i = ibStart; i < ibStart + cbSize; i++) {
+                hash ^= array[i];
+                hash *= Prime;
+            }
 
-            return seed;
+            return hash;
         }
     }
 }
