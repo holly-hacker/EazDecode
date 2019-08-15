@@ -5,11 +5,11 @@ namespace EazDecodeLib.Crypto3Algorithms
 {
     /// <inheritdoc />
     /// <summary>
-    /// A homebrew cipher that utilizes a big key for lookups.
+    /// An implementation of the SkipJack cipher
     /// </summary>
-    internal sealed class SymAlgoHomebrew : SymmetricAlgorithm
+    internal sealed class SymAlgoSkipJack32 : SymmetricAlgorithm
     {
-        private static readonly byte[] BigKey = {
+        private static readonly byte[] F = {
                 0xA3, 0xD7, 0x09, 0x83, 0xF8, 0x48, 0xF6, 0xF4,
                 0xB3, 0x21, 0x15, 0x78, 0x99, 0xB1, 0xAF, 0xF9,
                 0xE7, 0x2D, 0x4D, 0x8A, 0xCE, 0x4C, 0xCA, 0x2E,
@@ -44,7 +44,7 @@ namespace EazDecodeLib.Crypto3Algorithms
                 0xBD, 0xA8, 0x3A, 0x01, 0x05, 0x59, 0x2A, 0x46
             };
 
-        public SymAlgoHomebrew()
+        public SymAlgoSkipJack32()
         {
             LegalBlockSizesValue = new[] { new KeySizes(32, 32, 0) };
             LegalKeySizesValue = new[] { new KeySizes(80, 80, 0) };
@@ -54,7 +54,7 @@ namespace EazDecodeLib.Crypto3Algorithms
             PaddingValue = PaddingMode.None;
         }
 
-        public SymAlgoHomebrew(byte[] key) : this()
+        public SymAlgoSkipJack32(byte[] key) : this()
         {
             Key = key;
         }
@@ -82,15 +82,17 @@ namespace EazDecodeLib.Crypto3Algorithms
         private static uint GetUInt(byte[] val) => (uint)(val[0] << 24 | val[1] << 16 | val[2] << 8 | val[3]);
         private static int GetInt(byte[] val) => val[0] << 24 | val[1] << 16 | val[2] << 8 | val[3];
 
-        private static ushort BadCrypto(byte[] key, int keyIndex, ushort seed)
+        private static ushort G(byte[] key, int step, ushort w)
         {
-            byte hi = (byte)(seed >> 8 & 255);
-            byte lo = (byte)(seed & 255);
-            byte b1 = (byte)(BigKey[lo ^ key[(4 * keyIndex + 0) % 10]] ^ hi);
-            byte b2 = (byte)(BigKey[b1 ^ key[(4 * keyIndex + 1) % 10]] ^ lo);
-            byte b3 = (byte)(BigKey[b2 ^ key[(4 * keyIndex + 2) % 10]] ^ b1);
-            byte b4 = (byte)(BigKey[b3 ^ key[(4 * keyIndex + 3) % 10]] ^ b2);
-            return (ushort)((b3 << 8) + b4);
+            byte g1 = (byte)(w >> 8 & 255);
+            byte g2 = (byte)(w & 255);
+
+            byte g3 = (byte)(F[g2 ^ key[(step * 4 + 0) % 10]] ^ g1);
+            byte g4 = (byte)(F[g3 ^ key[(step * 4 + 1) % 10]] ^ g2);
+            byte g5 = (byte)(F[g4 ^ key[(step * 4 + 2) % 10]] ^ g3);
+            byte g6 = (byte)(F[g5 ^ key[(step * 4 + 3) % 10]] ^ g4);
+
+            return (ushort)((g5 << 8) + g6);
         }
 
         private byte[] DoCrypto(byte[] buffer, bool encrypt)
@@ -105,24 +107,24 @@ namespace EazDecodeLib.Crypto3Algorithms
 
         private static void TransformBlock(byte[] key, byte[] inputBuffer, int inputOffset, byte[] outputBuffer, int outputOffset, bool encrypt)
         {
-            int num1 = encrypt ? 1 : -1;
-            int num2 = encrypt ? 0 : 23;
+            int kstep = encrypt ? 1 : -1;
+            int k = encrypt ? 0 : 23;
 
-            ushort num3 = (ushort)((inputBuffer[inputOffset + 0] << 8) + inputBuffer[inputOffset + 1]);
-            ushort num4 = (ushort)((inputBuffer[inputOffset + 2] << 8) + inputBuffer[inputOffset + 3]);
+            ushort wl = (ushort)((inputBuffer[inputOffset + 0] << 8) + inputBuffer[inputOffset + 1]);
+            ushort wr = (ushort)((inputBuffer[inputOffset + 2] << 8) + inputBuffer[inputOffset + 3]);
 
             for (int i = 0; i < 12; i++)
             {
-                num4 ^= (ushort)(BadCrypto(key, num2, num3) ^ num2);
-                num2 += num1;
-                num3 ^= (ushort)(BadCrypto(key, num2, num4) ^ num2);
-                num2 += num1;
+                wr ^= (ushort)(G(key, k, wl) ^ k);
+                k += kstep;
+                wl ^= (ushort)(G(key, k, wr) ^ k);
+                k += kstep;
             }
 
-            outputBuffer[outputOffset + 0] = (byte)(num4 >> 8);
-            outputBuffer[outputOffset + 1] = (byte)(num4 & 255);
-            outputBuffer[outputOffset + 2] = (byte)(num3 >> 8);
-            outputBuffer[outputOffset + 3] = (byte)(num3 & 255);
+            outputBuffer[outputOffset + 0] = (byte)(wr >> 8);
+            outputBuffer[outputOffset + 1] = (byte)(wr & 255);
+            outputBuffer[outputOffset + 2] = (byte)(wl >> 8);
+            outputBuffer[outputOffset + 3] = (byte)(wl & 255);
         }
 
         private sealed class CryptTrans : ICryptoTransform, IDisposable
@@ -146,7 +148,7 @@ namespace EazDecodeLib.Crypto3Algorithms
             public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
             {
                 for (int i = 0; i < inputCount; i += 4)
-                    SymAlgoHomebrew.TransformBlock(_key, inputBuffer, inputOffset + i, outputBuffer, outputOffset + i, _encrypt);
+                    SymAlgoSkipJack32.TransformBlock(_key, inputBuffer, inputOffset + i, outputBuffer, outputOffset + i, _encrypt);
 
                 return inputCount;
             }
